@@ -1,2 +1,2 @@
-# 4522
+# COMP 4522
 Database II
