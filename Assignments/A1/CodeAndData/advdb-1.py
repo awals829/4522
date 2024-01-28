@@ -1,6 +1,7 @@
 # Adv DB Winter 2024 - 1
 
 import random
+import csv
 
 data_base = []  # Global binding for the Database contents
 '''
@@ -66,7 +67,7 @@ def is_there_a_failure()->bool:
 def main():
     number_of_transactions = len(transactions)
     must_recover = False
-    data_base = read_file('Employees_DB_ADV.csv')
+    data_base = read_file("Assignments\A1\CodeAndData\Employees_DB_ADV.csv")
     failure = is_there_a_failure()
     failing_transaction_index = None
     while not failure:
