@@ -1,0 +1,10 @@
+Database II : Assignment 1
+Assignment touches on the 'Transaction Manager' and 'Recovery Manager' of the Storage Engine.
+
+Linked List? Hashtable? Array List?
+
+Transaction ID (U/R+SQN+Timestamp) U = Update, R =Remove.
+Add Attribute to log table if transaction was successful.
+
+
+
