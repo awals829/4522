@@ -173,6 +173,6 @@ def main():
     for item in data_base:
         print(item)
         
-    print(f"\nLogged Transactions are:\n{'\n'.join(map(str, DB_Log[1:]))}")
+    print("\nLogged Transactions are:\n", '\n'.join(map(str, DB_Log[1:])))
 
 main()
