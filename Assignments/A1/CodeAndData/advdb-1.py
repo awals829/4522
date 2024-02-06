@@ -17,6 +17,8 @@ transactions = [['id1',' attribute2', 'value1'], ['id2',' attribute2', 'value2']
 transactions = [['1', 'Department', 'Music'], ['5', 'Civil_status', 'Divorced'],
                 ['15', 'Salary', '200000']]
 
+# ================================================================================
+# ================================================================================
 
 # ***Gave this a definition to mimic attributes, is this fine UwU?***
 DB_Log = [['transId', 'targetTable', 'empId', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']] # <-- You WILL populate this as you go
@@ -47,6 +49,9 @@ Since each transaction is a hard-coded UPDATE, a 'U' will be appended to the beg
 the of the Employees table will be generated to fill this space)**
 '''
 
+# ================================================================================
+# ================================================================================
+
 # ***Can we keep these? Don't make us lose the drip-code!***
 ''' Custom Functions '''
 
@@ -60,6 +65,9 @@ def generate_transId_sequence(size):
     random_sequence = ''.join(random.choice(all_characters) for _ in range(size))
     return ("U-" + random_sequence) # 'U' For Update
 
+# ================================================================================
+# ================================================================================
+
 def updateDbLog(success_status: str):
     '''
     Updates a Database Log off Pending ('P'), to the new parameter success state. Failure ('F') or Success ('S').
@@ -69,13 +77,19 @@ def updateDbLog(success_status: str):
     for log in DB_Log:
         if log[index] == 'P':
             log[index] = success_status
-            
+ 
+# ================================================================================
+# ================================================================================ 
+           
 def writeOutput(data : list):
     directory = os.path.dirname(os.path.realpath(__file__)) + '\Employees_DB_Output.csv' 
     with open(directory, 'w', newline='') as file:
         writer = csv.writer(file)
         for _ in data:
             writer.writerow(_)
+
+# ================================================================================
+# ================================================================================
 
 ''' End Of Custom Functions'''
 
@@ -97,6 +111,8 @@ def recovery_script(log:list, data_base:list ):  #<--- Your CODE
 
     print("Recovery in process ...\n")
 
+# ================================================================================
+# ================================================================================
 
 def transaction_processing(transaction : list, data : list): #<-- Your CODE
     empId = int(transaction[0])
@@ -112,7 +128,9 @@ def transaction_processing(transaction : list, data : list): #<-- Your CODE
     
     # Structure of 'DB_Log' = [['transId', 'targetTable', 'empId', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']]     
     DB_Log.append([transId, 'Employees', transaction[0], targetAttribute, attributeBeforeValue, attributeAfterValue, 'P', ownerTransId])
-    
+ 
+# ================================================================================
+# ================================================================================S
 
 def read_file(file_name:str)->list:
     '''
@@ -138,6 +156,8 @@ def read_file(file_name:str)->list:
     print(f"\nThere are {size} records in the database, including one header.\n")
     return data
 
+# ================================================================================
+# ================================================================================
 
 def is_there_a_failure()->bool:
     '''
@@ -150,6 +170,8 @@ def is_there_a_failure()->bool:
         result = False
     return result
 
+# ================================================================================
+# ================================================================================
 
 def main():
     number_of_transactions = len(transactions)
@@ -180,8 +202,7 @@ def main():
     else:
         # All transactions ended up well
         print("All transaction ended up well.")
-        print("Updates to the database were committed!\n")
-    
+        print("Updates to the database were committed!\n")   
     
 
     print('The data entries AFTER updates -and RECOVERY, if necessary- are presented below:')
@@ -191,5 +212,8 @@ def main():
     writeOutput(data_base)
         
     print("\nLogged Transactions are:\n", '\n'.join(map(str, DB_Log[1:])))
+
+# ================================================================================
+# ================================================================================
 
 main()
