@@ -51,6 +51,9 @@ the of the Employees table will be generated to fill this space)**
 ''' Custom Functions '''
 
 def generate_transId_sequence(size):
+    '''
+    Generates a random sequence of letters and numbers appended to a 'U' character.
+    '''
     all_characters = string.ascii_uppercase + string.digits  # includes letters (both cases) and digits
       
     # For Loop calls random.choice() until the size requested is hit, generating a random sequence.
@@ -58,6 +61,10 @@ def generate_transId_sequence(size):
     return ("U-" + random_sequence) # 'U' For Update
 
 def updateDbLog(success_status: str):
+    '''
+    Updates a Database Log off Pending ('P'), to the new parameter success state. Failure ('F') or Success ('S').
+    Does not check for a valid symbol entry.
+    '''
     index = DB_Log[0].index('success')
     for log in DB_Log:
         if log[index] == 'P':
