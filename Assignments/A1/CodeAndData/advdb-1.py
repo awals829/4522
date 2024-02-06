@@ -2,6 +2,7 @@
 
 import random
 import csv
+import os
 
 # ***Using this library to generate a random string of characters for the Transaction ID pweeease***
 import string
@@ -61,6 +62,13 @@ def updateDbLog(success_status: str):
     for log in DB_Log:
         if log[index] == 'P':
             log[index] = success_status
+            
+def writeOutput(data : list):
+    directory = os.path.dirname(os.path.realpath(__file__)) + '\Employees_DB_Output.csv' 
+    with open(directory, 'w', newline='') as file:
+        writer = csv.writer(file)
+        for _ in data:
+            writer.writerow(_)
 
 ''' End Of Custom Functions'''
 
@@ -172,6 +180,8 @@ def main():
     print('The data entries AFTER updates -and RECOVERY, if necessary- are presented below:')
     for item in data_base:
         print(item)
+        
+    writeOutput(data_base)
         
     print("\nLogged Transactions are:\n", '\n'.join(map(str, DB_Log[1:])))
 
