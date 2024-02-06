@@ -61,7 +61,7 @@ def updateDbLog(success_status: str):
     for log in DB_Log:
         if log[index] == 'P':
             log[index] = success_status
-            
+
 ''' End Of Custom Functions'''
 
 
@@ -141,7 +141,6 @@ def main():
     must_recover = False
     data_base = read_file("Assignments\A1\CodeAndData\Employees_DB_ADV.csv")
     failing_transaction_index = None
-
     # Process transaction
     for index in range(number_of_transactions):
         print(f"\nProcessing transaction No. {index+1}.")    #<--- Your CODE (Call function transaction_processing)
