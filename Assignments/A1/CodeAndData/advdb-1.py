@@ -81,8 +81,8 @@ def updateDbLog(success_status: str):
 # ================================================================================
 # ================================================================================ 
            
-def writeOutput(data : list):
-    directory = os.path.dirname(os.path.realpath(__file__)) + '\Employees_DB_Output.csv' 
+def writeOutput(data : list , file_name : str):
+    directory = os.path.dirname(os.path.realpath(__file__)) + file_name 
     with open(directory, 'w', newline='') as file:
         writer = csv.writer(file)
         for _ in data:
@@ -209,7 +209,8 @@ def main():
     for item in data_base:
         print(item)
         
-    writeOutput(data_base)
+    writeOutput(data_base, '\Employees_DB_Output.csv')
+    writeOutput(DB_Log, '\DB_Log_Output.csv')
         
     print("\nLogged Transactions are:\n", '\n'.join(map(str, DB_Log[1:])))
 
