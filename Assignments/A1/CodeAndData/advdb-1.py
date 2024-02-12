@@ -1,10 +1,11 @@
 # Adv DB Winter 2024 - 1
 
+# Incredibly Redundant, But Pretty, Header For ... Reasons...
 # =================================================================================================
-# =                                ASSIGNMENT #1 WINTER 2024                                      =
-# =                                COMP 4522 ADVANCED DATABASES                                   =
-# =                                GROUP: ANDREW W., RUTU K., & BRANDON K.                        =
-# =                                DUE: FEBRUARY 14                                               =
+# ======================          ASSIGNMENT #1 WINTER 2024                  ======================
+# ======================          COMP 4522 ADVANCED DATABASES               ======================
+# ======================          GROUP: ANDREW W., RUTU K., BRANDON K.      ======================
+# ======================          DUE: FEBRUARY 14                           ======================
 # =================================================================================================
 
 import random
@@ -14,7 +15,9 @@ import csv
 import os
 import string
 '''
+NOTE:
 Imported the 'os' library to aid with file reader as the file was having issues being found.
+To ensure this runs, make sure the two files 'advdb-1.py' & 'Employees_DB_ADV.csv' are in the same folder.
 
 Imported the 'string' library to give access to the ascii characters for the transaction ID in the DB_Log
 as well as the custom function 'generate_transId_sequence()'.
