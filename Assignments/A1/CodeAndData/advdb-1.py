@@ -1,11 +1,29 @@
 # Adv DB Winter 2024 - 1
 
+# =================================================================================================
+# =                                ASSIGNMENT #1 WINTER 2024                                      =
+# =                                COMP 4522 ADVANCED DATABASES                                   =
+# =                                GROUP: ANDREW W., RUTU K., & BRANDON K.                        =
+# =                                DUE: FEBRUARY 14                                               =
+# =================================================================================================
+
 import random
 import csv
-import os
 
-# ***Using this library to generate a random string of characters for the Transaction ID pweeease***
+
+import os
 import string
+'''
+Imported the 'os' library to aid with file reader as the file was having issues being found.
+
+Imported the 'string' library to give access to the ascii characters for the transaction ID in the DB_Log
+as well as the custom function 'generate_transId_sequence()'.
+'''
+
+
+# =================================================================================================
+# =================================================================================================
+
 
 data_base = []  # Global binding for the Database contents
 
@@ -17,81 +35,109 @@ transactions = [['id1',' attribute2', 'value1'], ['id2',' attribute2', 'value2']
 transactions = [['1', 'Department', 'Music'], ['5', 'Civil_status', 'Divorced'],
                 ['15', 'Salary', '200000']]
 
-# ================================================================================
-# ================================================================================
 
-# ***Gave this a definition to mimic attributes, is this fine UwU?***
+# =================================================================================================
+# =================================================================================================
+
+
 DB_Log = [['transId', 'targetTable', 'empId', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']] # <-- You WILL populate this as you go
-'''
-Structure of 'DB_Log' = [['transId', 'targetTable', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']]
+"""
+Details:
 
-Documentation for DB_Log
-'transId'       --> Identification key of the specific transaction.
-**(The transaction Id will be a ran through a generator function to create a "unique" Id. 
-Since each transaction is a hard-coded UPDATE, a 'U' will be appended to the beginning of the each transaction id.)**
+    Structure of 'DB_Log' = [['transId', 'targetTable', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']]
 
-'table'         --> Table the transaction is attempting to change.
+Attributes:
 
-'attribute'     --> The requested attribute to be changed for the transaction.
+    'transId'       --> Identification key of the specific transaction.
 
-'targetTable'   --> The data table being changed
+    'table'         --> Table the transaction is attempting to change.
 
-'empId'         --> The Id of the employee data being changed
+    'attribute'     --> The requested attribute to be changed for the transaction.
 
-'valueBefore'   --> The current attribute value in the table of selected transaction.
+    'targetTable'   --> The data table being changed
 
-'valueAfter'    --> The new attribute value pending change of the selected transaction.
+    'empId'         --> The Id of the employee data being changed
 
-'success'       --> The state of the transaction. 'S' = Success, 'P' = Pending, 'F' = Failure.
+    'valueBefore'   --> The current attribute value in the table of selected transaction.
 
-'ownerTransId'  --> The id of the owner who ran the transaction. 
-**(Since this is simulated, a random number based on the size of 
-the of the Employees table will be generated to fill this space)**
-'''
+    'valueAfter'    --> The new attribute value pending change of the selected transaction.
 
-# ================================================================================
-# ================================================================================
+    'success'       --> The state of the transaction. 'S' = Success, 'P' = Pending, 'F' = Failure.
 
-# ***Can we keep these? Don't make us lose the drip-code!***
-''' Custom Functions '''
+    'ownerTransId'  --> The id of the owner who ran the transaction.
+"""
 
-def generate_transId_sequence(size):
-    '''
-    Generates a random sequence of letters and numbers appended to a 'U' character.
-    '''
+
+# =================================================================================================
+# =================================================================================================
+''' Start Of Custom Functions '''
+
+
+def generate_transId_sequence(size : int, crud_type : chr) -> str:
+    """
+    Generates a 'unique' transaction Id for the DB_log using a CRUD character and a random sequence of numbers and letters
+    appended to the CRUD character. For example, if the size is 6 and the crud_type is 'C', the generated sequence could
+    look like: C-5TUI8Q.
+
+    Args:
+        size (int): amount of characters for the sequence to generate.
+        crud_type (chr): CRUD type to append to the front of the sequence. Ex. 'U' for update.
+
+    Returns:
+        str: Returns a random sequence of letters and numbers according to the size parameter and crud_type character.
+    """
     all_characters = string.ascii_uppercase + string.digits  # includes letters (both cases) and digits
       
     # For Loop calls random.choice() until the size requested is hit, generating a random sequence.
     random_sequence = ''.join(random.choice(all_characters) for _ in range(size))
-    return ("U-" + random_sequence) # 'U' For Update
+    return (crud_type + '-' + random_sequence)
 
-# ================================================================================
-# ================================================================================
+
+# =================================================================================================
+# =================================================================================================
+
 
 def updateDbLog(success_status: str):
-    '''
-    Updates a Database Log off Pending ('P'), to the new parameter success state. Failure ('F') or Success ('S').
-    Does not check for a valid symbol entry.
-    '''
+    """
+    Updates the Database Log with all current pending ('P') entries, to the new parameter success state. 
+    Failure ('F') or Success ('S'). This function does not check for a valid success_state character entry. 
+    Useful to make changes to all pending success states in the DB_Log.
+
+    Args:
+        success_status (str): The character to place into the DB_Log success attribute.
+    """
     index = DB_Log[0].index('success')
     for log in DB_Log:
         if log[index] == 'P':
             log[index] = success_status
  
-# ================================================================================
-# ================================================================================ 
+ 
+# =================================================================================================
+# ================================================================================================= 
+       
            
 def writeOutput(data : list , file_name : str):
+    """
+    Writes the output of a list of items to a csv file using the requested filename. 
+    The file being written to will appear in the relative path of the current file.
+    This is useful for seeing output without printing the Log and Database continuously,
+    or if the data needs to be accessed elsewhere.
+    
+    Args:
+        data (list): list to print to the csv file.
+        file_name (str): the filename to output to, will create a new file with this name, 
+        or overwrite a current file with the same name.
+    """
     directory = os.path.dirname(os.path.realpath(__file__)) + file_name 
     with open(directory, 'w', newline='') as file:
         writer = csv.writer(file)
         for _ in data:
             writer.writerow(_)
 
-# ================================================================================
-# ================================================================================
 
 ''' End Of Custom Functions'''
+# =================================================================================================
+# =================================================================================================
 
 
 
@@ -111,26 +157,42 @@ def recovery_script(log:list, data_base:list ):  #<--- Your CODE
 
     print("Recovery in process ...\n")
 
-# ================================================================================
-# ================================================================================
+
+# =================================================================================================
+# =================================================================================================
+
 
 def transaction_processing(transaction : list, data : list): #<-- Your CODE
     empId = int(transaction[0])
     targetAttribute = transaction[1]
-    transId = generate_transId_sequence(8)
+    transId = generate_transId_sequence(8, 'U')
     indexOfAttribute = data[0].index(targetAttribute)
     attributeBeforeValue = data[empId][indexOfAttribute]
     attributeAfterValue = transaction[2]
+    
+    ''' 
+    The following script will randomly select an integer value based on the size of the current database 
+    to give a hypothetical employee ID from the current Database.
+    '''
     ownerTransId = random.randint(1, len(data))
         
-    # data_base = ['Unique_ID', 'First_name', 'Last_name', 'Salary', 'Department', 'Civil_status']
+    ''' 
+    Details of data_base = ['Unique_ID', 'First_name', 'Last_name', 'Salary', 'Department', 'Civil_status']
+    "Updates database to new value, but the update is set to pending until it is finalized. This pending flag
+    allows for eventual failure flag changes and rollbacks.
+    '''
     data[empId][indexOfAttribute] = attributeAfterValue
     
-    # Structure of 'DB_Log' = [['transId', 'targetTable', 'empId', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']]     
+    '''
+    Details of 'DB_Log' = [['transId', 'targetTable', 'empId', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']]
+    Hard-coded table as 'Employees' due to the nature of the assignment, and hard-coded success as 'P' for pending.
+    '''   
     DB_Log.append([transId, 'Employees', transaction[0], targetAttribute, attributeBeforeValue, attributeAfterValue, 'P', ownerTransId])
+
  
-# ================================================================================
-# ================================================================================S
+# =================================================================================================
+# =================================================================================================
+
 
 def read_file(file_name:str)->list:
     '''
@@ -156,8 +218,10 @@ def read_file(file_name:str)->list:
     print(f"\nThere are {size} records in the database, including one header.\n")
     return data
 
-# ================================================================================
-# ================================================================================
+
+# =================================================================================================
+# =================================================================================================
+
 
 def is_there_a_failure()->bool:
     '''
@@ -170,15 +234,30 @@ def is_there_a_failure()->bool:
         result = False
     return result
 
-# ================================================================================
-# ================================================================================
+
+# =================================================================================================
+# =================================================================================================
+
 
 def main():
     number_of_transactions = len(transactions)
     must_recover = False
-    data_base = read_file("Assignments\A1\CodeAndData\Employees_DB_ADV.csv")
+    
+    '''
+    NOTE:
+    Added following script to grab the relatively located 'Employees_DV_ADV.csv' file.
+    '''
+    directory = os.path.dirname(os.path.realpath(__file__)) + '\Employees_DB_ADV.csv'
+    
+    data_base = read_file(directory)
     failing_transaction_index = None
     # Process transaction
+    
+    '''
+    NOTE:
+    Removed exterior while loop and failure check to always allow an attempt of transactions. The original for loop 
+    will run at max the total transactions being attempted in the 'transactions' list variable.
+    '''
     for index in range(number_of_transactions):
         print(f"\nProcessing transaction No. {index+1}.")    #<--- Your CODE (Call function transaction_processing)
         transaction_processing(transactions[index], data_base) # ***Defined function placed here***
@@ -188,17 +267,18 @@ def main():
             must_recover = True
             failing_transaction_index = index + 1
             print(f'There was a failure whilst processing transaction No. {failing_transaction_index}.')
-            updateDbLog('F') # ***No idea if we need this, it just sets the logged pending transactions to the argument value.***
+            updateDbLog('F')
             break
         else:
             print(f'Transaction No. {index+1} has been commited! Changes are permanent.')
-            updateDbLog('S') # ***No idea if we need this, it just sets the logged pending transactions to the argument value.***
+            updateDbLog('S')
                 
     if must_recover:
         #Call your recovery script
         recovery_script(DB_Log, data_base) ### Call the recovery function to restore DB to sound state
         
-        print(f"The Transaction That Failed Was: {transactions[failing_transaction_index-1]}\n") # ***Group Test Print Remove Later***
+        ''' Printing just to see the failed trans details (Uncomment to see) '''
+        # print(f"The Transaction That Failed Was: {transactions[failing_transaction_index-1]}\n")
     else:
         # All transactions ended up well
         print("All transaction ended up well.")
@@ -208,13 +288,16 @@ def main():
     print('The data entries AFTER updates -and RECOVERY, if necessary- are presented below:')
     for item in data_base:
         print(item)
-        
-    writeOutput(data_base, '\Employees_DB_Output.csv')
-    writeOutput(DB_Log, '\DB_Log_Output.csv')
-        
-    print("\nLogged Transactions are:\n", '\n'.join(map(str, DB_Log[1:])))
+    
+    writeOutput(data_base, '\Employees_DB_Output.csv') # Writes the final data_base details to a csv file.
+    writeOutput(DB_Log, '\DB_Log_Output.csv') # Writes the final DB_Log details to a csv file.
+       
+    ''' Printing just to see the final DB_Log details (Uncomment to see) '''
+    # print("\nLogged Transactions are:\n", '\n'.join(map(str, DB_Log[1:])))
 
-# ================================================================================
-# ================================================================================
+
+# =================================================================================================
+# =================================================================================================
+
 
 main()
