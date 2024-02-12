@@ -170,7 +170,7 @@ def recovery_script(log:list, data_base:list ):  #<--- Your CODE
 def transaction_processing(transaction : list, data : list): #<-- Your CODE
     empId = int(transaction[0])
     targetAttribute = transaction[1]
-    transId = generate_transId_sequence(8, 'U')
+    transId = generate_transId_sequence(8, 'U') # <-- Custom Function Call
     indexOfAttribute = data[0].index(targetAttribute)
     attributeBeforeValue = data[empId][indexOfAttribute]
     attributeAfterValue = transaction[2]
@@ -272,11 +272,11 @@ def main():
             must_recover = True
             failing_transaction_index = index + 1
             print(f'There was a failure whilst processing transaction No. {failing_transaction_index}.')
-            updateDbLog('F')
+            updateDbLog('F') # <-- Custom Function Call
             break
         else:
             print(f'Transaction No. {index+1} has been commited! Changes are permanent.')
-            updateDbLog('S')
+            updateDbLog('S') # <-- Custom Function Call
                 
     if must_recover:
         #Call your recovery script
