@@ -1,4 +1,2 @@
 transId,targetTable,empId,targetAttribute,valueBefore,valueAfter,success,ownerTransId
-U-XTVGEJC0,Employees,1,Department,Projects,Music,S,16
-U-1QX7G09A,Employees,5,Civil_status,Married,Divorced,S,10
-U-AJSNCX1I,Employees,15,Salary,321000,200000,F,7
+U-ZJN545RC,Employees,1,Department,Projects,Music,F,1
