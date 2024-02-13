@@ -1,3 +1,4 @@
 transId,targetTable,empId,targetAttribute,valueBefore,valueAfter,success,ownerTransId
-U-MJ9CL9G5,Employees,1,Department,Projects,Music,S,7
-U-3OAHLKPL,Employees,5,Civil_status,Married,Divorced,F,5
+U-3NTGKD54,Employees,5,Civil_status,Married,Divorced,S,4
+U-ZF0AHGOP,Employees,1,Department,Projects,Music,S,6
+U-9SSFWGW7,Employees,15,Salary,321000,200000,F,12
