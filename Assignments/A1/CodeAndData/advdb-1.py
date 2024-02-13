@@ -174,7 +174,7 @@ def transaction_processing(transaction : list, data : list): #<-- Your CODE
     '''
     empId = int(transaction[0])
     targetAttribute = transaction[1]
-    transId = generate_transId_sequence(8, 'U') # <-- Custom Function Call.
+    transId = generate_transId_sequence(4, 'U') # <-- Custom Function Call.
     indexOfAttribute = data[0].index(targetAttribute)
     attributeBeforeValue = data[empId][indexOfAttribute]
     attributeAfterValue = transaction[2]
