@@ -1,3 +1,3 @@
 transId,targetTable,empId,targetAttribute,valueBefore,valueAfter,success,ownerTransId
-U-GBWF,Employees,1,Department,Projects,Music,S,5
-U-SDH3,Employees,5,Civil_status,Married,Divorced,F,8
+U-H2M4,Employees,5,Civil_status,Married,Divorced,S,1
+U-R3MT,Employees,15,Salary,321000,200000,F,4
