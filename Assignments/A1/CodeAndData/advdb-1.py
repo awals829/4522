@@ -168,6 +168,10 @@ def recovery_script(log:list, data_base:list ):  #<--- Your CODE
 
 
 def transaction_processing(transaction : list, data : list): #<-- Your CODE
+    '''
+    Does not check for empty transaction list or data list.
+    Assumes entries have correct corresponding values.
+    '''
     empId = int(transaction[0])
     targetAttribute = transaction[1]
     transId = generate_transId_sequence(8, 'U') # <-- Custom Function Call
@@ -179,7 +183,7 @@ def transaction_processing(transaction : list, data : list): #<-- Your CODE
     The following script will randomly select an integer value based on the size of the current database 
     to give a hypothetical employee ID from the current Database.
     '''
-    ownerTransId = random.randint(1, len(data))
+    ownerTransId = random.randint(1, len(data)-1)
         
     ''' 
     Details of data_base = ['Unique_ID', 'First_name', 'Last_name', 'Salary', 'Department', 'Civil_status']
@@ -190,7 +194,7 @@ def transaction_processing(transaction : list, data : list): #<-- Your CODE
     
     '''
     Details of 'DB_Log' = [['transId', 'targetTable', 'empId', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']]
-    Hard-coded table as 'Employees' due to the nature of the assignment, and hard-coded success as 'P' for pending.
+    set targetTable attribute as 'Employees' due to the nature of the assignment, and set success attribute as 'P' for pending.
     '''   
     DB_Log.append([transId, 'Employees', transaction[0], targetAttribute, attributeBeforeValue, attributeAfterValue, 'P', ownerTransId])
 
@@ -258,14 +262,27 @@ def main():
     failing_transaction_index = None
     # Process transaction
     
+    ''' 
+        Following writeOutput() call resets database output file to original database. 
+        Useful to see changes only made on the most recent run.
+    '''
+    writeOutput(data_base, '\Employees_DB_Output.csv')
     '''
     NOTE:
-    Removed exterior while loop and failure check to always allow an attempt of transactions. The original for loop 
-    will run at max the total transactions being attempted in the 'transactions' list variable.
+    Removed exterior while loop and failure check to always 
+    allow an attempt of a transaction. The original for loop will 
+    run at max the total transactions being attempted in the 'transactions' 
+    list variable.
     '''
     for index in range(number_of_transactions):
-        print(f"\nProcessing transaction No. {index+1}.")    #<--- Your CODE (Call function transaction_processing)
-        transaction_processing(transactions[index], data_base) # ***Defined function placed here***
+        ''' 
+            Randomly chooses a transaction from transactions and removes it to avoid duplicates.
+            Transactions in random order help to mimic random transaction ordering.
+        '''
+        transaction = random.choice(transactions)
+        
+        print(f"\nProcessing transaction No. {index + 1}. Requested transaction: {transaction}")   #<--- Your CODE (Call function transaction_processing)
+        transaction_processing(transaction, data_base) # ***Defined function placed here***
         print("UPDATES have not been committed yet...\n")
         failure = is_there_a_failure()
         if failure:
@@ -277,6 +294,9 @@ def main():
         else:
             print(f'Transaction No. {index+1} has been commited! Changes are permanent.')
             updateDbLog('S') # <-- Custom Function Call
+            
+            ''' Remove successful transaction from transactions list. '''
+            transactions.remove(transaction)
                 
     if must_recover:
         #Call your recovery script
@@ -296,7 +316,8 @@ def main():
     
     writeOutput(data_base, '\Employees_DB_Output.csv') # Writes the final data_base details to a csv file.
     writeOutput(DB_Log, '\DB_Log_Output.csv') # Writes the final DB_Log details to a csv file.
-       
+    writeOutput(transactions, '\Remaining_Transactions.csv') # Writes remaining transactions to a csv file. (Empty if all successful).
+     
     ''' Printing just to see the final DB_Log details (Uncomment to see) '''
     # print("\nLogged Transactions are:\n", '\n'.join(map(str, DB_Log[1:])))
 
