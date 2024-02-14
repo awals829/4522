@@ -1,2 +1,4 @@
 transId,targetTable,empId,targetAttribute,valueBefore,valueAfter,success,ownerTransId
-U-D9NW,Employees,8,Salary,325000,350000,F,11
+U-5FLS,Employees,15,Salary,321000,200000,Committed,13
+U-NVE3,Employees,5,Civil_status,Married,Divorced,Committed,15
+U-ALFX,Employees,8,Salary,325000,350000,Rolled-Back,8

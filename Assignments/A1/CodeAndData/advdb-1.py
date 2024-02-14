@@ -62,7 +62,15 @@ DB_Log = [['transId', 'targetTable', 'empId', 'targetAttribute', 'valueBefore', 
 """
 Details:
 
-    Structure of 'DB_Log' = [['transId', 'targetTable', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']]
+    Structure of 'DB_Log' = [[\n
+    'transId',\n 
+    'targetTable',\n 
+    'targetAttribute',\n 
+    'valueBefore',\n
+    'valueAfter',\n 
+    'success',\n
+    'ownerTransId'\n
+    ]]\n
 
 Attributes:
 
@@ -80,7 +88,8 @@ Attributes:
 
     'valueAfter'    --> The new attribute value pending change of the selected transaction.
 
-    'success'       --> The state of the transaction. 'S' = Success, 'P' = Pending, 'F' = Failure.
+    'success'       --> The state of the transaction. 
+                        'S' = Committed, 'P' = Not-Executed, 'F' = Rolled-Back.
 
     'ownerTransId'  --> The id of the owner who ran the transaction.
 """
@@ -88,8 +97,11 @@ Attributes:
 
 # =================================================================================================
 # =================================================================================================
-''' Start Of Custom Functions '''
+''' Start Of Custom Variables and Functions '''
 
+P = "Not-Executed"  # Pending
+S = "Committed"     # Success
+F = "Rolled-Back"   # Failure
 
 def generate_transId_sequence(size : int, crud_type : chr) -> str:
     """
@@ -126,7 +138,7 @@ def updateDbLog(success_status: str):
     """
     index = DB_Log[0].index('success')
     for log in DB_Log:
-        if log[index] == 'P':
+        if log[index] == P:
             log[index] = success_status
  
  
@@ -153,7 +165,7 @@ def writeOutput(data : list , file_name : str):
             writer.writerow(_)
 
 
-''' End Of Custom Functions'''
+''' End Of Custom Variables and Functions '''
 # =================================================================================================
 # =================================================================================================
 
@@ -166,7 +178,7 @@ def recovery_script(log:list):  #<--- Your CODE
     valueBeforeIndex = log[0].index('valueBefore') # Use this to acquire the valueBefore index in the log
     
     for datalog in log:
-        if datalog[successIndex] == 'F':
+        if datalog[successIndex] == F:
                 attributeToRevert = datalog[logAttributeIndex]
                 valueBefore = datalog[valueBeforeIndex]
                 empId = datalog[logEmpIdIndex]
@@ -212,9 +224,9 @@ def transaction_processing(transaction : list, data : list): #<-- Your CODE
         '''
         NOTE:
         Details of 'DB_Log' = [['transId', 'targetTable', 'empId', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']]
-        set targetTable attribute as 'Employees' due to the nature of the assignment, and set success attribute as 'P' for pending.
+        set targetTable attribute as 'Employees' due to the nature of the assignment, and set success attribute as 'P' for Not-Executed (Pending).
         '''   
-        DB_Log.append([transId, 'Employees', transaction[0], targetAttribute, attributeBeforeValue, attributeAfterValue, 'P', ownerTransId])
+        DB_Log.append([transId, 'Employees', transaction[0], targetAttribute, attributeBeforeValue, attributeAfterValue, P, ownerTransId])
 
  
 # =================================================================================================
@@ -318,11 +330,11 @@ def main():
             must_recover = True
             failing_transaction_index = index + 1
             print(f'There was a failure whilst processing transaction No. {failing_transaction_index}.')
-            updateDbLog('F') # <-- Custom Function Call
+            updateDbLog(F) # <-- Custom Function Call
             break
         else:
             print(f'Transaction No. {index+1} has been commited! Changes are permanent.')
-            updateDbLog('S') # <-- Custom Function Call
+            updateDbLog(S) # <-- Custom Function Call
             
             ''' NOTE: Remove successful transaction from transactions list. '''
             transactions.remove(transaction)
@@ -336,7 +348,7 @@ def main():
     else:
         # All transactions ended up well
         print("All transaction ended up well.")
-        print("Updates to the database were committed!\n")   
+        print("Updates to the database were committed!\n")
     
 
     print('The data entries AFTER updates -and RECOVERY, if necessary- are presented below:')
