@@ -37,6 +37,11 @@ data_base = [] # Global binding for the Database contents
 transactions = [['id1',' attribute2', 'value1'], ['id2',' attribute2', 'value2'],
                 ['id3', 'attribute3', 'value3']]
 '''
+
+'''
+NOTE:
+Added 5 more test transactions to test program generalization.
+'''
 transactions = [
                 ['1', 'Department', 'Music'], 
                 ['5', 'Civil_status', 'Divorced'],
@@ -178,37 +183,38 @@ def recovery_script(log:list):  #<--- Your CODE
 def transaction_processing(transaction : list, data : list): #<-- Your CODE
     '''
     NOTE:
-    Does not check for empty transaction list or data list.
-    Assumes entries have correct corresponding values.
+    Only runs transaction_processing provided the lists have values
+    to use. It is assumed that values being changed are valid.
     '''
-    empId = int(transaction[0])
-    targetAttribute = transaction[1]
-    transId = generate_transId_sequence(4, 'U') # <-- Custom Function Call.
-    indexOfAttribute = data[0].index(targetAttribute)
-    attributeBeforeValue = data[empId][indexOfAttribute]
-    attributeAfterValue = transaction[2]
-    
-    ''' 
-    NOTE:
-    The following script will randomly select an integer value based on the size of the current database 
-    to give a hypothetical employee ID from the current Database.
-    '''
-    ownerTransId = random.randint(1, len(data)-1)
+    if (len(data) > 1 and len(transaction) > 0):
+        empId = int(transaction[0])
+        targetAttribute = transaction[1]
+        transId = generate_transId_sequence(4, 'U') # <-- Custom Function Call.
+        indexOfAttribute = data[0].index(targetAttribute)
+        attributeBeforeValue = data[empId][indexOfAttribute]
+        attributeAfterValue = transaction[2]
         
-    ''' 
-    NOTE:
-    Details of data_base = ['Unique_ID', 'First_name', 'Last_name', 'Salary', 'Department', 'Civil_status']
-    "Updates database to new value, but the update is set to pending until it is finalized. This pending flag
-    allows for eventual failure flag changes and rollbacks.
-    '''
-    data[empId][indexOfAttribute] = attributeAfterValue
-    
-    '''
-    NOTE:
-    Details of 'DB_Log' = [['transId', 'targetTable', 'empId', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']]
-    set targetTable attribute as 'Employees' due to the nature of the assignment, and set success attribute as 'P' for pending.
-    '''   
-    DB_Log.append([transId, 'Employees', transaction[0], targetAttribute, attributeBeforeValue, attributeAfterValue, 'P', ownerTransId])
+        ''' 
+        NOTE:
+        The following script will randomly select an integer value based on the size of the current database 
+        to give a hypothetical employee ID from the current Database.
+        '''
+        ownerTransId = random.randint(1, len(data)-1)
+            
+        ''' 
+        NOTE:
+        Details of data_base = ['Unique_ID', 'First_name', 'Last_name', 'Salary', 'Department', 'Civil_status']
+        "Updates database to new value, but the update is set to pending until it is finalized. This pending flag
+        allows for eventual failure flag changes and rollbacks.
+        '''
+        data[empId][indexOfAttribute] = attributeAfterValue
+        
+        '''
+        NOTE:
+        Details of 'DB_Log' = [['transId', 'targetTable', 'empId', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']]
+        set targetTable attribute as 'Employees' due to the nature of the assignment, and set success attribute as 'P' for pending.
+        '''   
+        DB_Log.append([transId, 'Employees', transaction[0], targetAttribute, attributeBeforeValue, attributeAfterValue, 'P', ownerTransId])
 
  
 # =================================================================================================
