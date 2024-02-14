@@ -30,15 +30,23 @@ as well as the custom function 'generate_transId_sequence()'.
 # =================================================================================================
 
 
-data_base = []  # Global binding for the Database contents
+data_base = [] # Global binding for the Database contents
 
 
 '''
 transactions = [['id1',' attribute2', 'value1'], ['id2',' attribute2', 'value2'],
                 ['id3', 'attribute3', 'value3']]
 '''
-transactions = [['1', 'Department', 'Music'], ['5', 'Civil_status', 'Divorced'],
-                ['15', 'Salary', '200000']]
+transactions = [
+                ['1', 'Department', 'Music'], 
+                ['5', 'Civil_status', 'Divorced'],
+                ['15', 'Salary', '200000'],
+                ['4', 'First_name', 'John'],
+                ['4','Civil_status','Single'],
+                ['8','Salary','350000'],
+                ['12','Department','Engineering'],
+                ['2','First_name','Jane']
+            ]
 
 
 # =================================================================================================
@@ -146,7 +154,7 @@ def writeOutput(data : list , file_name : str):
 
 
 
-def recovery_script(log:list, data_base:list ):  #<--- Your CODE
+def recovery_script(log:list):  #<--- Your CODE
     logEmpIdIndex = log[0].index('empId') # Use this to acquire the Attribute index in the log
     logAttributeIndex = log[0].index('targetAttribute') # Use this to acquire the Attribute index in the log
     successIndex = log[0].index('success') # Use this to acquire the success index in the log
@@ -169,6 +177,7 @@ def recovery_script(log:list, data_base:list ):  #<--- Your CODE
 
 def transaction_processing(transaction : list, data : list): #<-- Your CODE
     '''
+    NOTE:
     Does not check for empty transaction list or data list.
     Assumes entries have correct corresponding values.
     '''
@@ -180,12 +189,14 @@ def transaction_processing(transaction : list, data : list): #<-- Your CODE
     attributeAfterValue = transaction[2]
     
     ''' 
+    NOTE:
     The following script will randomly select an integer value based on the size of the current database 
     to give a hypothetical employee ID from the current Database.
     '''
     ownerTransId = random.randint(1, len(data)-1)
         
     ''' 
+    NOTE:
     Details of data_base = ['Unique_ID', 'First_name', 'Last_name', 'Salary', 'Department', 'Civil_status']
     "Updates database to new value, but the update is set to pending until it is finalized. This pending flag
     allows for eventual failure flag changes and rollbacks.
@@ -193,6 +204,7 @@ def transaction_processing(transaction : list, data : list): #<-- Your CODE
     data[empId][indexOfAttribute] = attributeAfterValue
     
     '''
+    NOTE:
     Details of 'DB_Log' = [['transId', 'targetTable', 'empId', 'targetAttribute', 'valueBefore', 'valueAfter', 'success', 'ownerTransId']]
     set targetTable attribute as 'Employees' due to the nature of the assignment, and set success attribute as 'P' for pending.
     '''   
@@ -258,15 +270,25 @@ def main():
     '''
     csv_file = os.path.dirname(os.path.realpath(__file__)) + '\Employees_DB_ADV.csv'
     
+    '''
+    NOTE:
+    Changed the data_base variable to access the predeclared
+    "global" data_base variable at the top of the file.
+    This change allowed ua to access data_base in all 
+    functions called in main without passing it as a parameter.
+    '''
+    global data_base
     data_base = read_file(csv_file)
     failing_transaction_index = None
     # Process transaction
     
     ''' 
-        Following writeOutput() call resets database output file to original database. 
-        Useful to see changes only made on the most recent run.
+    NOTE:
+    Following writeOutput() call resets database output file to original database. 
+    Useful to see changes only made on the most recent run.
     '''
     writeOutput(data_base, '\Employees_DB_Output.csv')
+    
     '''
     NOTE:
     Removed exterior while loop and failure check to always 
@@ -276,8 +298,9 @@ def main():
     '''
     for index in range(number_of_transactions):
         ''' 
-            Randomly chooses a transaction from transactions and removes it to avoid duplicates.
-            Transactions in random order help to mimic random transaction ordering.
+        NOTE:
+        Randomly chooses a transaction from transactions and removes it to avoid duplicates.
+        Transactions in random order help to mimic random transaction ordering.
         '''
         transaction = random.choice(transactions)
         
@@ -295,14 +318,14 @@ def main():
             print(f'Transaction No. {index+1} has been commited! Changes are permanent.')
             updateDbLog('S') # <-- Custom Function Call
             
-            ''' Remove successful transaction from transactions list. '''
+            ''' NOTE: Remove successful transaction from transactions list. '''
             transactions.remove(transaction)
                 
     if must_recover:
         #Call your recovery script
-        recovery_script(DB_Log, data_base) ### Call the recovery function to restore DB to sound state
+        recovery_script(DB_Log) ### Call the recovery function to restore DB to sound state
         
-        ''' Printing just to see the failed trans details (Uncomment to see) '''
+        ''' NOTE: Printing just to see the failed trans details (Uncomment to see) '''
         # print(f"The Transaction That Failed Was: {transactions[failing_transaction_index-1]}\n")
     else:
         # All transactions ended up well
@@ -318,7 +341,7 @@ def main():
     writeOutput(DB_Log, '\DB_Log_Output.csv') # Writes the final DB_Log details to a csv file.
     writeOutput(transactions, '\Remaining_Transactions.csv') # Writes remaining transactions to a csv file. (Empty if all successful).
      
-    ''' Printing just to see the final DB_Log details (Uncomment to see) '''
+    ''' NOTE: Printing just to see the final DB_Log details (Uncomment to see) '''
     # print("\nLogged Transactions are:\n", '\n'.join(map(str, DB_Log[1:])))
 
 

@@ -1,2 +1,4 @@
 transId,targetTable,empId,targetAttribute,valueBefore,valueAfter,success,ownerTransId
-U-2BKN,Employees,1,Department,Projects,Music,F,7
+U-80O2,Employees,4,First_name,John,John,S,7
+U-F3UV,Employees,2,First_name,Joan,Jane,S,8
+U-7P55,Employees,4,Civil_status,Separated,Single,F,7
