@@ -46,7 +46,7 @@ transactions = [
                 ['1', 'Department', 'Music'], 
                 ['5', 'Civil_status', 'Divorced'],
                 ['15', 'Salary', '200000'],
-                ['4', 'First_name', 'John'],
+                ['4', 'First_name', 'Bill'],
                 ['4','Civil_status','Single'],
                 ['8','Salary','350000'],
                 ['12','Department','Engineering'],

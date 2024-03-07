@@ -1,5 +1,5 @@
 transId,targetTable,empId,targetAttribute,valueBefore,valueAfter,success,ownerTransId
-U-XAHD,Employees,8,Salary,325000,350000,Committed,5
-U-L1SU,Employees,15,Salary,321000,200000,Committed,15
-U-X6F3,Employees,1,Department,Projects,Music,Committed,3
-U-15PK,Employees,12,Department,Industries,Engineering,Rolled-Back,14
+U-E1EV,Employees,15,Salary,321000,200000,Committed,3
+U-MF0D,Employees,4,Civil_status,Separated,Single,Committed,11
+U-LCT7,Employees,4,First_name,John,Bill,Committed,15
+U-UB7K,Employees,12,Department,Industries,Engineering,Rolled-Back,9
