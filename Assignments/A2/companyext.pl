@@ -77,9 +77,19 @@ subordinate(X,Y) :- superior(Y,X).
 
 % Should you need to write new rules, please enter them here.
 
+% All Employees that work in department research.
+resDep(X) :- employee(X), (department(X,research)).
+
+% All Employees that work in department administration.
+adminDep(X) :- employee(X), (department(X,administration)).
+
+% All Employees that work in department headquarters.
+hqDep(X) :- employee(X), (department(X,headquarters)).
+
+%Q2 A2
+q2(X) :- resDep(X), (salary(X,Z), Z > 40000).
+
 %-------------------------------------------------------------
 % Queries
 % Write your queries here .
-
-
 
