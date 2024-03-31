@@ -75,21 +75,23 @@ superior(X,Y) :- supervise(X,Y).
 
 subordinate(X,Y) :- superior(Y,X).
 
+president(X) :- employee(X), not(subordinate(X,_)).
+
+
+
 % Should you need to write new rules, please enter them here.
-
-% All Employees that work in department research.
-resDep(X) :- employee(X), (department(X,research)).
-
-% All Employees that work in department administration.
-adminDep(X) :- employee(X), (department(X,administration)).
-
-% All Employees that work in department headquarters.
-hqDep(X) :- employee(X), (department(X,headquarters)).
-
-%Q2 A2
-q2(X) :- resDep(X), (salary(X,Z), Z > 40000).
 
 %-------------------------------------------------------------
 % Queries
 % Write your queries here .
+
+q1(X) :- employee(X), female(X), works_on(X,computerization,10), superior(jennifer,X).
+
+q2(X) :- employee(X), salary(X,Y), Y > 40000, department(X,research).
+
+q3(X) :- president(X).
+
+q4(X) :- works_on(X,productx,Y), Y >= 20.
+
+
 
