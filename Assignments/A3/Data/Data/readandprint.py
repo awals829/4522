@@ -52,7 +52,7 @@ def main():
     # read PERFORMANCE data
     mydata = myreader(cwd + STUD_PERF_DATA)
     print("STUDENT_PERFORMANCE_DATA")
-    for i in range(0,len(mydata)):
+    for i in range(0,29):
         print(mydata[i])
     print("=============================================================================================")
     # read DEPT data
